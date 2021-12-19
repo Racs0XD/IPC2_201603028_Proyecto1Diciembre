@@ -1,26 +1,3 @@
-#-----------------------------------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
-#------------------------------------------------------- Clases --------------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------------------------------
-
-#------------------------------------------------------- Artista --------------------------------------------------------
-class NodeArtista:
-    def __init__(self,artista):
-        self.artistaA = artista 
-        self.albumA = ListaDobleAlbum()  
-        
-#------------------------------------------------------- Album --------------------------------------------------------
-class NodeAlbum:
-    def __init__(self,album,imagen):
-        self.albumB = album
-        self.imagenB = imagen
-        self.cancionB = ListaDobleCancion()
-#------------------------------------------------------- Cancion --------------------------------------------------------
-class NodeCancion:
-    def __init__(self,nombre, ruta):
-        self.nombreC = nombre
-        self.rutaC = ruta
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
@@ -35,7 +12,7 @@ class ListaDobleArtista:
         self.finalArtista = None                    
     
     def listarArtista(self, artista):  
-        nuevoArtista = NodeArtista(artista)
+        nuevoArtista = NodeTemp(artista)
         if self.inicioArtista is None:            
             self.inicioArtista = nuevoArtista
             self.finalArtista = self.inicioArtista
@@ -51,6 +28,11 @@ class ListaDobleArtista:
                 yield n
                 n = n.siguiente
 
+    def mostrarArtistaFinal(self):
+            n = self.finalArtista
+            while n is not None:                
+                yield n
+                n = n.anterior
                 
 #------------------------------------------------------- Album --------------------------------------------------------
 class ListaDobleAlbum:
@@ -59,7 +41,7 @@ class ListaDobleAlbum:
         self.finalAlbum = None 
         
     def listarAlbum(self,album):        
-        nuevoAlbum = NodeAlbum(album)     
+        nuevoAlbum = NodeTemp(album)     
         if self.inicioAlbum is None:            
             self.inicioAlbum = nuevoAlbum
             self.finalAlbum = self.inicioAlbum
@@ -74,6 +56,13 @@ class ListaDobleAlbum:
             while m is not None:   
                 yield m
                 m = m.siguiente    
+
+    def mostrarAlbumFinal(self):
+            m = self.finalAlbum
+            while m is not None:                
+                yield m
+                m = m.anterior  
+
 #------------------------------------------------------- Cancion --------------------------------------------------------
 class ListaDobleCancion:
     def __init__(self):
@@ -81,7 +70,7 @@ class ListaDobleCancion:
         self.finalCancion = None    
 
     def listarCancion(self,cancion):        
-        nuevaCancion = NodeAlbum(cancion)
+        nuevaCancion = NodeTemp(cancion)
          
         if self.inicioCancion is None:            
             self.inicioCancion = nuevaCancion
@@ -98,5 +87,105 @@ class ListaDobleCancion:
                 yield o
                 o = o.siguiente
     
+    def mostrarCancionFinal(self):
+            o = self.finalCancion
+            while o is not None:                
+                yield o
+                o = o.anterior  
 
 
+#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------- Clases --------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------
+
+#------------------------------------------------------- Artista --------------------------------------------------------
+class NodeArtista:
+    def __init__(self,artista):
+        self.artistaA = artista 
+        self.albumA = ListaDobleAlbum()  
+    
+    def setAlbum(self,album):
+        self.existe = False
+        for alb in self.albumA.mostrarAlbum():
+            if alb.data.albumB == album:
+                self.existe = True
+                return alb
+        if self.existe == False:
+            return False
+    
+#------------------------------------------------------- Album --------------------------------------------------------
+class NodeAlbum:
+    def __init__(self,album,imagen):
+        self.albumB = album
+        self.imagenB = imagen
+        self.cancionB = ListaDobleCancion()
+
+    def setCancion(self,cancion):
+        self.existe = False
+        for canc in self.cancionB.mostrarCancion():
+            if canc.data.nombreC == cancion:
+                self.existe = True
+                return canc
+        if self.existe == False:
+            return False
+#------------------------------------------------------- Cancion --------------------------------------------------------
+class NodeCancion:
+    def __init__(self,nombre, ruta):
+        self.nombreC = nombre
+        self.rutaC = ruta
+
+    def __str__(self):
+        return "Cancion -> {}".format(self.nombreC,"",self.rutaC)
+#------------------------------------------------------- Temporal --------------------------------------------------------
+
+class NodeTemp:
+    def __init__(self, data):
+        self.data = data
+        self.siguiente= None
+        self.anterior = None
+
+class Llenado:
+    def __init__(self):
+        self.listaArtistas = ListaDobleArtista()
+
+    def agregarCancion(self, artista,album,imagen,ruta,nombre):
+        art = artista
+        alb = album
+        img = imagen
+        rut = ruta
+        nom = nombre
+        contenedor = self.Biblioteca(artista)
+        if contenedor != False:
+            artista = contenedor.data
+            contenedor = artista.setAlbum(alb) 
+            if contenedor != False:
+                album = contenedor.data
+                contenedor = album.setCancion(nombre)
+                if contenedor != False:
+                    print("La cancion {} ya existe en ese album y artista".format(contenedor.data.nombreC))
+                else:
+                    nuevaCancion = NodeCancion(nom,rut)
+                    album.cancionB.listarCancion(nuevaCancion)
+            else:
+                nuevaCancion = NodeCancion(nom,rut)
+                nuevoAlbum = NodeAlbum(alb,img)
+                nuevoAlbum.cancionB.listarCancion(nuevaCancion) 
+                artista.albumA.listarAlbum(nuevoAlbum)
+        else:
+            nuevaCancion = NodeCancion(nom,rut)
+            nuevoAlbum = NodeAlbum(alb,img)
+            nuevoAlbum.cancionB.listarCancion(nuevaCancion) 
+            nuevoArtista = NodeArtista(art)
+            nuevoArtista.albumA.listarAlbum(nuevoAlbum)
+            self.listaArtistas.listarArtista(nuevoArtista)
+    
+    def Biblioteca(self, dato):
+        self.existe = False
+        for biblioteca in self.listaArtistas.mostrarArtista():
+            if biblioteca.data.artistaA == dato:
+                self.existe = True
+                return biblioteca
+        if self.existe == False:
+            return False
