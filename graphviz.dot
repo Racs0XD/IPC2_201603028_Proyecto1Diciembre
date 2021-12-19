@@ -1,0 +1,60 @@
+digraph G{
+edge [weigth = 1000];
+rankdir = LR;
+	"Cartoon"[fillcolor = red style = "filled"];
+		"Sencillo"[fillcolor = orange style = "filled"]
+;			"Cartoon  Made Me Feel ft Kristel Aaslaid Champion Remix"[fillcolor = yellow style = "filled"];
+			"Cartoon  On  On feat Daniel Levi NCS Release"[fillcolor = yellow style = "filled"];
+	"Imagine Dragons"[fillcolor = red style = "filled"];
+		"Sencillo"[fillcolor = orange style = "filled"]
+;			"Enemy from the series Arcane League of Legends"[fillcolor = yellow style = "filled"];
+	"Healsy"[fillcolor = red style = "filled"];
+		"Manic"[fillcolor = orange style = "filled"]
+;			"Graveyar"[fillcolor = yellow style = "filled"];
+			"You should be sad"[fillcolor = yellow style = "filled"];
+		"Badlands"[fillcolor = orange style = "filled"]
+;			"New Americana"[fillcolor = yellow style = "filled"];
+	"PXNDX"[fillcolor = red style = "filled"];
+		"Poetics"[fillcolor = orange style = "filled"]
+;			"Solo a terceros"[fillcolor = yellow style = "filled"];
+"PXNDX"->"Healsy"
+"Cartoon"->"Imagine Dragons"
+"Cartoon"->"Sencillo"
+"Sencillo"->"Album None"
+"Sencillo"->"Album None"
+"Sencillo"->"Cartoon  Made Me Feel ft Kristel Aaslaid Champion Remix"
+"Cartoon  On  On feat Daniel Levi NCS Release"->"Cartoon  Made Me Feel ft Kristel Aaslaid Champion Remix"
+"Cartoon  Made Me Feel ft Kristel Aaslaid Champion Remix"->"Cartoon  On  On feat Daniel Levi NCS Release"
+"Cartoon  Made Me Feel ft Kristel Aaslaid Champion Remix"->"Cancion None"
+"Cartoon  On  On feat Daniel Levi NCS Release"->"Cancion None"
+"Healsy"->"Imagine Dragons"
+"Imagine Dragons"->"Healsy"
+"Imagine Dragons"->"Sencillo"
+"Sencillo"->"Album None"
+"Sencillo"->"Album None"
+"Sencillo"->"Enemy from the series Arcane League of Legends"
+"Enemy from the series Arcane League of Legends"->"Cancion None"
+"Enemy from the series Arcane League of Legends"->"Cancion None"
+"Imagine Dragons"->"Cartoon"
+"Healsy"->"PXNDX"
+"Healsy"->"Manic"
+"Badlands"->"Manic""Manic"->"Badlands"
+"Manic"->"Graveyar"
+"You should be sad"->"Graveyar"
+"Graveyar"->"You should be sad"
+"Graveyar"->"Cancion None"
+"You should be sad"->"Cancion None"
+"Manic"->"Album None"
+"Badlands"->"Album None"
+"Badlands"->"New Americana"
+"New Americana"->"Cancion None"
+"New Americana"->"Cancion None"
+"Cartoon"->"Artista None"
+"PXNDX"->"Artista None"
+"PXNDX"->"Poetics"
+"Poetics"->"Album None"
+"Poetics"->"Album None"
+"Poetics"->"Solo a terceros"
+"Solo a terceros"->"Cancion None"
+"Solo a terceros"->"Cancion None"
+}

@@ -1,4 +1,5 @@
-
+from os import system
+import os
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
 #------------------------------------------------------- Listas --------------------------------------------------------
@@ -189,3 +190,50 @@ class Llenado:
                 return biblioteca
         if self.existe == False:
             return False
+
+    def graphviz(self):
+        grafo = "digraph G{\n"
+        grafo += "edge [weigth = 1000];\n"
+        grafo += "rankdir = LR;\n"
+        for artista in self.listaArtistas.mostrarArtista():
+            grafo += '\t"{}"[fillcolor = red style = "filled"];\n'.format(artista.data.artistaA)
+            for album in artista.data.albumA.mostrarAlbum():
+                grafo += '\t\t"{}"[fillcolor = orange style = "filled"]\n;'.format(album.data.albumB)
+                for cancion in album.data.cancionB.mostrarCancion():
+                    grafo += '\t\t\t"{}"[fillcolor = yellow style = "filled"];\n'.format(cancion.data.nombreC)
+        for artista,arti in zip(self.listaArtistas.mostrarArtista(), self.listaArtistas.mostrarArtistaFinal()):
+            if arti == self.listaArtistas.inicioArtista:
+                grafo += '"{}"->"Artista None"\n'.format(arti.data.artistaA)
+            else:
+                grafo += '"{}"->"{}"\n'.format(arti.data.artistaA, arti.anterior.data.artistaA)
+            if artista == self.listaArtistas.finalArtista:
+                grafo += '"{}"->"Artista None"\n'.format(artista.data.artistaA)
+            else:
+                grafo += '"{}"->"{}"\n'.format(artista.data.artistaA, artista.siguiente.data.artistaA)
+            for album, albn in zip(artista.data.albumA.mostrarAlbum(), artista.data.albumA.mostrarAlbumFinal()):
+                if album == artista.data.albumA.inicioAlbum:
+                    grafo += '"{}"->"{}"\n'.format(artista.data.artistaA, album.data.albumB)
+                if albn == artista.data.albumA.inicioAlbum:
+                    grafo += '"{}"->"Album None"\n'.format(albn.data.albumB)
+                else:
+                    grafo += '"{}"->"{}"'.format(albn.data.albumB, albn.anterior.data.albumB)
+                if album == artista.data.albumA.finalAlbum:
+                    grafo += '"{}"->"Album None"\n'.format(album.data.albumB)
+                else:
+                    grafo += '"{}"->"{}"\n'.format(album.data.albumB, album.siguiente.data.albumB)
+                for cancion, can in zip(album.data.cancionB.mostrarCancion(), album.data.cancionB.mostrarCancionFinal()):
+                    if cancion == album.data.cancionB.inicioCancion:
+                        grafo += '"{}"->"{}"\n'.format(album.data.albumB, cancion.data.nombreC)
+                    if can == album.data.cancionB.inicioCancion:
+                        grafo += '"{}"->"Cancion None"\n'.format(can.data.nombreC)
+                    else:
+                        grafo += '"{}"->"{}"\n'.format(can.data.nombreC, can.anterior.data.nombreC)
+                    if cancion == album.data.cancionB.finalCancion:
+                        grafo += '"{}"->"Cancion None"\n'.format(cancion.data.nombreC)
+                    else:
+                        grafo += '"{}"->"{}"\n'.format(cancion.data.nombreC, cancion.siguiente.data.nombreC)
+        grafo += "}"
+        file =open("graphviz.dot", "w")
+        file.write(grafo)
+        file.close()
+        os.system("dot -Tpng graphviz.dot -o graphviz.png")
