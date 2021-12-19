@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import filedialog
 import xml.etree.ElementTree as ET
+
   #-----------------------------------------------------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
     #------------------------------------------------------- Listas --------------------------------------------------------
@@ -13,9 +14,13 @@ from ListaDoble import *
 Artista_Lista = ListaDobleArtista()
 
 Listar = Llenado()
+
+def buscador():
+    val = filedialog.askopenfilename(title ='Seleccion de archivo xml',initialdir = './', filetypes=(('xml files', '*.xml'),('all files','*.*')))
+    cargaXML(val)
   
-def cargaXML():   
-    contenido = open("biblioteca.xml").read()
+def cargaXML(ruta):   
+    contenido = open(ruta).read()
     biblioteca = ET.fromstring(contenido)
     for biblio in biblioteca.iter("biblioteca"):
         for can in biblio.iter("cancion"):
@@ -182,11 +187,11 @@ class IG():
     boton5.place(x=700,y=50)
     boton5.config(width=75, height=75)
     
-    boton6 = tkinter.Button(frameAr,text="Archivo", fg="white",font=("broadway 12 bold"), command = cargaXML, borderwidth=0, bg="grey")
+    boton6 = tkinter.Button(frameAr,text="Archivo", fg="white",font=("broadway 12 bold"), command = buscador, borderwidth=0, bg="grey")
     boton6.place(x=25,y=5)
     boton6.config(width=12, height=1)
 
-    boton7 = tkinter.Button(frameAr,text="Reporte", fg="white",font=("broadway 12 bold"), command = hola, borderwidth=0, bg="grey")
+    boton7 = tkinter.Button(frameAr,text="Reporte", fg="white",font=("broadway 12 bold"), command = Listar.graphviz, borderwidth=0, bg="grey")
     boton7.place(x=205,y=5)
     boton7.config(width=12, height=1)
 
