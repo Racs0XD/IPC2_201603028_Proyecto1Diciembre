@@ -1,9 +1,39 @@
 import tkinter
+from tkinter import filedialog
+import xml.etree.ElementTree as ET
   #-----------------------------------------------------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
     #------------------------------------------------------- Listas --------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
     #-----------------------------------------------------------------------------------------------------------------------
+
+
+#--------------------------------------------------------- XML --------------------------------------------------------
+from ListaDoble import *
+Artista_Lista = ListaDobleArtista()
+
+Listar = Llenado()
+  
+def cargaXML():   
+    contenido = open("biblioteca.xml").read()
+    biblioteca = ET.fromstring(contenido)
+    for biblio in biblioteca.iter("biblioteca"):
+        for can in biblio.iter("cancion"):
+            nombre = can.attrib['nombre']
+            album = ""
+            artista = ""
+            imagen = ""
+            ruta = ""
+            for ar in can.iter("artista"):
+                artista += ar.text  
+            for al in can.iter("album"):
+                album += al.text  
+            for im in can.iter("imagen"):
+                imagen += im.text 
+            for ru in can.iter("ruta"):
+                ruta += ru.text   
+            Listar.agregarCancion(artista,album,imagen,ruta,nombre)
+ 
 
 
 class IG():   
@@ -152,7 +182,7 @@ class IG():
     boton5.place(x=700,y=50)
     boton5.config(width=75, height=75)
     
-    boton6 = tkinter.Button(frameAr,text="Archivo", fg="white",font=("broadway 12 bold"), command = hola, borderwidth=0, bg="grey")
+    boton6 = tkinter.Button(frameAr,text="Archivo", fg="white",font=("broadway 12 bold"), command = cargaXML, borderwidth=0, bg="grey")
     boton6.place(x=25,y=5)
     boton6.config(width=12, height=1)
 
